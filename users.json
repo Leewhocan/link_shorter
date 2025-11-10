@@ -1,0 +1,48 @@
+{
+  "78248bf1-67bd-430b-8894-989c840ab552" : {
+    "id" : "78248bf1-67bd-430b-8894-989c840ab552",
+    "name" : "name",
+    "createdAt" : [ 2025, 11, 10, 21, 28, 11, 796348800 ],
+    "keySwitch" : 1,
+    "links" : { }
+  },
+  "914609c1-1185-4a48-b36c-b1656bcfa5b7" : {
+    "id" : "914609c1-1185-4a48-b36c-b1656bcfa5b7",
+    "name" : "name",
+    "createdAt" : [ 2025, 11, 10, 21, 32, 51, 290328100 ],
+    "keySwitch" : 2,
+    "links" : { }
+  },
+  "1734c024-e90e-4e56-8e63-e488e97ec153" : {
+    "id" : "1734c024-e90e-4e56-8e63-e488e97ec153",
+    "name" : "na,e",
+    "createdAt" : [ 2025, 11, 10, 21, 35, 34, 941578700 ],
+    "keySwitch" : 3,
+    "links" : { }
+  },
+  "c70cb15c-6620-4760-bcdf-c49dfb5d7145" : {
+    "id" : "c70cb15c-6620-4760-bcdf-c49dfb5d7145",
+    "name" : "name",
+    "createdAt" : [ 2025, 11, 10, 21, 40, 20, 711820400 ],
+    "keySwitch" : 4,
+    "links" : { }
+  },
+  "f63d5f2f-b322-4b61-9ff6-580c3d1cff2e" : {
+    "id" : "f63d5f2f-b322-4b61-9ff6-580c3d1cff2e",
+    "name" : "name",
+    "createdAt" : [ 2025, 11, 10, 21, 50, 41, 581729700 ],
+    "keySwitch" : 5,
+    "links" : {
+      "https://student-lk.skillfactory.ru/my-study" : {
+        "longUrl" : "https://student-lk.skillfactory.ru/my-study",
+        "shortUrl" : "clck.ru/lXqi1y",
+        "shortCode" : "lXqi1y",
+        "createdAt" : [ 2025, 11, 10, 21, 50, 46, 1351400 ],
+        "expiresAt" : [ 2025, 11, 10, 21, 53, 46, 1351400 ],
+        "maxClicks" : 10,
+        "currentClicks" : 0,
+        "active" : true
+      }
+    }
+  }
+}

@@ -1,0 +1,107 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.15.2'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2'
+}
+
+application {
+    mainClass = 'org.example.Main'
+}
+
+// Чтение свойств из gradle.properties с значениями по умолчанию
+def baseShortUrl = project.hasProperty('baseShortUrl') ? project.baseShortUrl : 'clck.ru/'
+def linkLifetimeMinutes = project.hasProperty('linkLifetimeMinutes') ? project.linkLifetimeMinutes.toInteger() : 3
+def defaultMaxClicks = project.hasProperty('defaultMaxClicks') ? project.defaultMaxClicks.toInteger() : 10
+
+test {
+    useJUnitPlatform()
+}
+
+run {
+    systemProperty "base.short.url", baseShortUrl
+    systemProperty "link.lifetime.minutes", linkLifetimeMinutes.toString()
+    systemProperty "default.max.clicks", defaultMaxClicks.toString()
+    standardInput = System.in
+}
+
+// Основной JAR с свойствами из gradle.properties
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'org.example.Main',
+                // Добавляем свойства в манифест
+                'Base-Short-Url': baseShortUrl,
+                'Link-Lifetime-Minutes': linkLifetimeMinutes.toString(),
+                'Default-Max-Clicks': defaultMaxClicks.toString()
+        )
+    }
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+// Fat JAR который также включает свойства
+task fatJar(type: Jar) {
+    manifest {
+        attributes(
+                'Main-Class': 'org.example.Main',
+                // Добавляем свойства в манифест fat JAR
+                'Base-Short-Url': baseShortUrl,
+                'Link-Lifetime-Minutes': linkLifetimeMinutes.toString(),
+                'Default-Max-Clicks': defaultMaxClicks.toString()
+        )
+    }
+    archiveBaseName = project.name + '-all'
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+// Задача для запуска JAR с правильными свойствами
+task runJar(type: Exec) {
+    dependsOn jar
+    commandLine 'java',
+            '-Dbase.short.url=' + baseShortUrl,
+            '-Dlink.lifetime.minutes=' + linkLifetimeMinutes,
+            '-Ddefault.max.clicks=' + defaultMaxClicks,
+            '-jar', jar.archiveFile.get()
+}
+
+// Создаем задачу которая генерирует скрипт запуска с свойствами
+task createRunScript(type: CreateStartScripts) {
+    mainClass = 'org.example.Main'
+    applicationName = 'url-shortener'
+    defaultJvmOpts = [
+            '-Dbase.short.url=' + baseShortUrl,
+            '-Dlink.lifetime.minutes=' + linkLifetimeMinutes,
+            '-Ddefault.max.clicks=' + defaultMaxClicks
+    ]
+    outputDir = file("${buildDir}/scripts")
+    classpath = jar.outputs.files
+}
+
+
+task createConfigFile(type: WriteProperties) {
+    outputFile = file("${buildDir}/config.properties")
+    property('base.short.url', baseShortUrl)
+    property('link.lifetime.minutes', linkLifetimeMinutes.toString())
+    property('default.max.clicks', defaultMaxClicks.toString())
+}
+
+
+assemble.dependsOn createConfigFile
