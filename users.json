@@ -32,17 +32,13 @@
     "name" : "name",
     "createdAt" : [ 2025, 11, 10, 21, 50, 41, 581729700 ],
     "keySwitch" : 5,
-    "links" : {
-      "https://student-lk.skillfactory.ru/my-study" : {
-        "longUrl" : "https://student-lk.skillfactory.ru/my-study",
-        "shortUrl" : "clck.ru/lXqi1y",
-        "shortCode" : "lXqi1y",
-        "createdAt" : [ 2025, 11, 10, 21, 50, 46, 1351400 ],
-        "expiresAt" : [ 2025, 11, 10, 21, 53, 46, 1351400 ],
-        "maxClicks" : 10,
-        "currentClicks" : 0,
-        "active" : true
-      }
-    }
+    "links" : { }
+  },
+  "62a40660-6105-484a-846e-32aaa5dce7a5" : {
+    "id" : "62a40660-6105-484a-846e-32aaa5dce7a5",
+    "name" : "name",
+    "createdAt" : [ 2025, 11, 10, 22, 10, 38, 689996700 ],
+    "keySwitch" : 6,
+    "links" : { }
   }
 }

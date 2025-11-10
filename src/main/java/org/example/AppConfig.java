@@ -10,13 +10,6 @@ public class AppConfig {
     private static final int DEFAULT_MAX_CLICKS;
 
     static {
-        System.out.println("=== AppConfig Initialization ===");
-
-        // Пробуем получить свойства из манифеста JAR
-        Package mainPackage = AppConfig.class.getPackage();
-        String manifestBaseUrl = mainPackage.getImplementationTitle(); // Это не сработает, нужно по-другому
-
-        // Вместо этого будем читать из системных свойств или config.properties
         Properties props = loadConfigFromFile();
 
         // Получаем значение из системных свойств (через Gradle или командную строку)
@@ -24,7 +17,6 @@ public class AppConfig {
         if (url == null || url.trim().isEmpty()) {
             url = props.getProperty("base.short.url", "clck.ru/");
         }
-        System.out.println("Using base URL: " + url);
         BASE_SHORT_URL = url;
 
         // Получаем время жизни ссылки
@@ -42,12 +34,6 @@ public class AppConfig {
         }
         int maxClicks = parseWithDefault(maxClicksStr, 10, "max clicks");
         DEFAULT_MAX_CLICKS = maxClicks;
-
-        System.out.println("=== Final AppConfig Values ===");
-        System.out.println("BASE_SHORT_URL: " + BASE_SHORT_URL);
-        System.out.println("LINK_LIFETIME_MINUTES: " + LINK_LIFETIME_MINUTES);
-        System.out.println("DEFAULT_MAX_CLICKS: " + DEFAULT_MAX_CLICKS);
-        System.out.println("================================\n");
     }
 
     private static Properties loadConfigFromFile() {
@@ -55,14 +41,10 @@ public class AppConfig {
         try {
             // Пробуем загрузить из config.properties рядом с JAR
             props.load(new FileInputStream("config.properties"));
-            System.out.println("Loaded configuration from config.properties");
         } catch (IOException e) {
-            System.out.println("config.properties not found, using defaults");
-
             // Пробуем загрузить из ресурсов (если config был включен в JAR)
             try {
                 props.load(AppConfig.class.getClassLoader().getResourceAsStream("config.properties"));
-                System.out.println("Loaded configuration from embedded config.properties");
             } catch (Exception ex) {
                 // Игнорируем, используем значения по умолчанию
             }
@@ -72,11 +54,8 @@ public class AppConfig {
 
     private static int parseWithDefault(String value, int defaultValue, String propertyName) {
         try {
-            int result = value != null ? Integer.parseInt(value) : defaultValue;
-            System.out.println("Using " + propertyName + ": " + result);
-            return result;
+            return value != null ? Integer.parseInt(value) : defaultValue;
         } catch (NumberFormatException e) {
-            System.out.println("Error parsing " + propertyName + ", using default: " + defaultValue);
             return defaultValue;
         }
     }
